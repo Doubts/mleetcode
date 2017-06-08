@@ -5,8 +5,9 @@ package Algorithm.OneToFifty;
  * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
  */
 
-// TODO unfinished
 public class A5LongestPalindromicSubstring {
+
+    // wrong
     public static String longesrPalindrome(String s) {
         char[] c = s.toCharArray();
         int len = c.length;
@@ -17,12 +18,10 @@ public class A5LongestPalindromicSubstring {
         int medium = len / 2;
         if (len % 2 == 0) {
             result = palindromeEven(c, len, medium);
-            System.out.println("even: " + result);
             return s.substring(len - result - 1, result + 1);
 
         } else {
             result = palindromOdd(c, len, medium);
-            System.out.println("odd: " + result);
             return s.substring(result, len - result);
         }
 
@@ -45,7 +44,6 @@ public class A5LongestPalindromicSubstring {
             medium ++;
         }
 //        return (len / 2 - medium) * 2;
-        System.out.println("返回的数据： " + medium);
         return medium;
     }
 
@@ -58,7 +56,47 @@ public class A5LongestPalindromicSubstring {
         return medium;
     }
 
+
+    // reference: http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
+    // traversal
+    // beats 40%
+    public static String longestPalindrome(String s) {
+        if (s.isEmpty()) {
+            return null;
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        String longest = s.substring(0, 1);
+        for (int i = 0; i < s.length(); i++) {
+            String temp = helper(s, i, i);
+
+            if (temp.length() > longest.length()) {
+                longest = temp;
+            }
+
+            temp = helper(s, i, i+1);
+            if (temp.length() > longest.length()) {
+                longest = temp;
+            }
+         }
+
+        return longest;
+    }
+
+    private static String helper(String s, int begin, int end) {
+        while (begin >= 0 && end <= s.length() - 1 && s.charAt(begin) == s.charAt(end)) {
+            begin--;
+            end++;
+        }
+
+        return s.substring(begin + 1, end);
+    }
+
+
+
     public static void main(String[] args) {
-        System.out.println(longesrPalindrome("cbacabd"));
+        System.out.println(longestPalindrome("cbacabd"));
     }
 }
